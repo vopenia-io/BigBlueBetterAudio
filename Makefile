@@ -195,5 +195,6 @@ pregen: faustpp
 	$(FAUSTPP_RUN) $(FAUSTPP_OPTS) dsp/bbba.dsp -a plugin/template/FaustPlugin.cpp   -o plugin/pregen/FaustPlugin.cpp
 	$(FAUSTPP_RUN) $(FAUSTPP_OPTS) dsp/bbba_gui.dsp -a plugin/template/FaustPluginInfo.h -o plugin/pregen-gui/FaustPluginInfo.h
 	$(FAUSTPP_RUN) $(FAUSTPP_OPTS) dsp/bbba_gui.dsp -a plugin/template/FaustPlugin.cpp   -o plugin/pregen-gui/FaustPlugin.cpp
+	./mobile/tools/extract_faust.sh
 
 .PHONY: pregen
