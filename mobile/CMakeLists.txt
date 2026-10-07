@@ -1,11 +1,14 @@
 # Copyright 2026
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
-# Decoupled, platform-agnostic build for the BigBlueBetterAudio mobile core.
-# Stage 1 (this file): compile RNNoise + a desktop WAV denoise CLI to validate
-# the toolchain and the [-1,1] sample-scaling contract (Gate 1).
+# Platform-agnostic build of the BigBlueBetterAudio mobile core: RNNoise plus
+# the bbba_core library, and two desktop WAV harnesses. An Android NDK build can
+# add_subdirectory() this file with BBBA_MOBILE_BUILD_TESTS=OFF and link
+# bbba_core.
 cmake_minimum_required(VERSION 3.16)
 project(bbba_mobile C CXX)
+
+option(BBBA_MOBILE_BUILD_TESTS "Build the desktop WAV harnesses" ON)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 14)
@@ -34,9 +37,11 @@ add_library(bbba_core STATIC core/bbba_core.cpp)
 target_include_directories(bbba_core PUBLIC core)
 target_link_libraries(bbba_core PUBLIC rnnoise)
 
-# --- Gate 1 desktop harnesses ---
-add_executable(denoise_cli test/denoise_cli.c)     # RNNoise only
-target_link_libraries(denoise_cli rnnoise m)
+# --- desktop harnesses ---
+if(BBBA_MOBILE_BUILD_TESTS)
+    add_executable(denoise_cli test/denoise_cli.c)     # RNNoise only
+    target_link_libraries(denoise_cli rnnoise m)
 
-add_executable(bbba_cli test/bbba_cli.cpp)         # full chain via C API
-target_link_libraries(bbba_cli bbba_core m)
+    add_executable(bbba_cli test/bbba_cli.cpp)         # full chain via C API
+    target_link_libraries(bbba_cli bbba_core m)
+endif()

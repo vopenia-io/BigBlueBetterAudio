@@ -3,32 +3,31 @@ Pod::Spec.new do |spec|
   spec.version      = "1.0.0"
   spec.summary      = "BigBlueBetterAudio shared C/C++ noise-suppression core (RNNoise + Faust)."
   spec.description  = <<-DESC
-    Dedicated pod that vendors the BBBA C/C++ noise-suppression core (the
-    shared `mobile/core/` files, the iOS ObjC++ façade `BBBAEngine`, and the
-    RNNoise voice-isolation backbone + model weights) inside its own pod
-    root so CocoaPods doesn't reject `../`-relative source paths.
+    The BBBA voice processor for iOS apps: the shared `mobile/core/` C/C++
+    sources, the Objective-C++ facade `BBBAEngine`, and the RNNoise voice
+    isolation sources with their model weights. The podspec sits at the
+    repository root because CocoaPods rejects source paths that leave the pod
+    root, and RNNoise lives in `deps/`.
 
-    Consumers (LiveKitClientKotlin) link against this pod and use the ObjC
-    `BBBAEngine` from Swift; the C/C++ stays internal.
+    Swift code uses `BBBAEngine`; the C/C++ stays internal.
   DESC
 
   spec.homepage     = "https://github.com/trummerschlunk/BigBlueBetterAudio"
   spec.license      = { :type => "GPLv3", :file => "LICENSE" }
-  spec.author       = "Guido Aulisi (BBBA) / Vopenia mobile integration"
+  spec.authors      = ["Klaus Scheuermann", "Filipe Coelho"]
 
-  spec.ios.deployment_target = "13.0"
+  spec.ios.deployment_target = "15.0"
   spec.osx.deployment_target = "10.15"
 
-  # Locally referenced via :path from the consumer Gradle's cocoapods block;
-  # the :git/:tag here is only used if BBBACore ever gets published.
+  # Consumed with `pod 'BBBACore', :path => '<this repository>'`; the :git/:tag
+  # source only matters if the pod is ever published to a spec repo.
   spec.source = { :git => "https://github.com/trummerschlunk/BigBlueBetterAudio.git", :tag => spec.version.to_s }
 
-  # Explicit RNNoise sources — same list as the Android CMakeLists
-  # (vopenia-participants/src/androidMain/cpp/CMakeLists.txt). NOT all of
+  # Explicit RNNoise sources, the same list as mobile/CMakeLists.txt. Not all of
   # deps/rnnoise/src/*.c: dump_features.c / dump_rnnoise_tables.c /
-  # write_weights.c are training-tool sources, they #include
-  # "src/_kiss_fft_guts.h" with a path that only resolves from the rnnoise
-  # repo root and they're not needed at runtime.
+  # write_weights.c are training tools, they #include "src/_kiss_fft_guts.h"
+  # with a path that only resolves from the rnnoise repo root, and they are not
+  # needed at runtime.
   spec.source_files = [
     "mobile/ios/BBBAEngine.h",
     "mobile/ios/BBBAEngine.mm",

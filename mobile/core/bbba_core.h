@@ -3,7 +3,7 @@
 //
 // bbba-core: platform-agnostic C API for the BigBlueBetterAudio voice
 // processor (RNNoise voice isolation + VAD gate + Faust aesthetic chain).
-// No platform, plugin-framework, LiveKit or app dependencies — this is the
+// No platform, plugin-framework or app dependencies — this is the
 // shared core consumed by the Android (JNI) and iOS (ObjC++) bindings.
 //
 // Sample convention: mono float samples in [-1, 1]. RNNoise requires 48 kHz.

@@ -1,10 +1,10 @@
 // Copyright 2026
 // SPDX-License-Identifier: GPL-3.0-or-later
 //
-// Gate-1 harness: read a mono 16-bit PCM WAV, run it through RNNoise frame by
-// frame applying the confirmed [-1,1] scaling contract, write a denoised WAV,
-// and print VAD + RMS-reduction stats. This validates the toolchain and the
-// sample-scaling convention before any mobile binding is written.
+// RNNoise-only harness: read a mono 16-bit PCM WAV, run it through RNNoise frame
+// by frame with the [-1,1] sample scaling the core uses, write a denoised WAV,
+// and print VAD + RMS-reduction stats. Checks the toolchain and the scaling on
+// their own, without the rest of the chain.
 
 #include <math.h>
 #include <stdint.h>
